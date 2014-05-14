@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-city-gender\n"
+"POT-Creation-Date: 2014-05-14 22:00+0100\n"
+"PO-Revision-Date: 2014-05-14 22:04+0100\n"
+"Last-Translator: Alexander Farber <Alexander.Farber@gmail.com>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: c:\\temp\n"
+
+#: c:\temp/wp-city-gender.php:52
+msgid "First Name"
+msgstr "Имя"
+
+#: c:\temp/wp-city-gender.php:56
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: c:\temp/wp-city-gender.php:60
+msgid "Gender"
+msgstr "Пол"
+
+#: c:\temp/wp-city-gender.php:64
+msgid "City"
+msgstr "Город"
+
+#: c:\temp/wp-city-gender.php:74
+msgid "<strong>ERROR</strong>: First name missing."
+msgstr "<strong>ОШИБКА</strong>:  Не указано имя."
+
+#: c:\temp/wp-city-gender.php:76
+msgid "<strong>ERROR</strong>: Last name missing."
+msgstr "<strong>ОШИБКА</strong>: Не указана фамилия."
+
+#: c:\temp/wp-city-gender.php:78
+msgid "<strong>ERROR</strong>: Gender missing."
+msgstr "<strong>ОШИБКА</strong>: Не указан пол."
+
+#: c:\temp/wp-city-gender.php:80
+msgid "<strong>ERROR</strong>: City missing."
+msgstr "<strong>ОШИБКА</strong>: Не указан город."
