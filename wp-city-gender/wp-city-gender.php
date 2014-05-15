@@ -27,13 +27,6 @@ if (!class_exists('WP_City_Gender')) {
 		public static function deactivate() {
 		}
 
-		// Add the settings link to the plugins page
-		function plugin_settings_link($links) {
-			$settings_link = '<a href="options-general.php?page=wp-city-gender">Settings</a>';
-			array_unshift($links, $settings_link);
-			return $links;
-		}
-
                 public static function valid($str) {
                         return (isset($str) && strlen($str) > 0);
                 }
