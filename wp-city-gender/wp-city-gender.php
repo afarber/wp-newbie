@@ -11,8 +11,10 @@ License: GPL2
 
 define('FIRST_NAME', 'first_name');
 define('LAST_NAME', 'last_name');
-define('GENDER', 'gender');
 define('CITY', 'city');
+define('GENDER', 'gender');
+define('MALE', 'male');
+define('FEMALE', 'female');
 
 if (!class_exists('WP_City_Gender')) {
 
@@ -27,62 +29,78 @@ if (!class_exists('WP_City_Gender')) {
 		public static function deactivate() {
 		}
 
-                public static function valid($str) {
-                        return (isset($str) && strlen($str) > 0);
-                }
-
                 public static function fix($str) {
-                        return (WP_City_Gender::valid($str) ? $str : '');
+                        return (isset($str) && strlen($str) > 1 ? $str : NULL);
                 }
 
                 public static function register_form() {
-                        $first_name = WP_City_Gender::fix($_POST[FIRST_NAME]);
-                        $last_name  = WP_City_Gender::fix($_POST[LAST_NAME]);
-                        $gender     = WP_City_Gender::fix($_POST[GENDER]);
-                        $city       = WP_City_Gender::fix($_POST[CITY]);
+                        $first_name = self::fix($_POST[FIRST_NAME]);
+                        $last_name  = self::fix($_POST[LAST_NAME]);
+                        $city       = self::fix($_POST[CITY]);
+                        $gender     = self::fix($_POST[GENDER]);
+
                         ?>
-                        <p>
-                        <label for="first_name"><?php _e('First Name', 'wp-city-gender') ?><br />
-                        <input type="text" name="first_name" id="first_name" class="input" 
-                        value="<?php echo esc_attr(stripslashes($first_name)); ?>" size="25" />
-                        </label>
-                        <label for="last_name"><?php _e('Last Name', 'wp-city-gender') ?><br />
-                        <input type="text" name="last_name" id="last_name" class="input" 
-                        value="<?php echo esc_attr(stripslashes($last_name)); ?>" size="25" />
-                        </label>
-                        <label for="gender"><?php _e('Gender', 'wp-city-gender') ?><br />
-                        <input type="text" name="gender" id="gender" class="input" 
-                        value="<?php echo esc_attr(stripslashes($gender)); ?>" size="25" />
-                        </label>
-                        <label for="city"><?php _e('City', 'wp-city-gender') ?><br />
-                        <input type="text" name="city" id="city" class="input" 
-                        value="<?php echo esc_attr(stripslashes($city)); ?>" size="25" />
-                        </label>
-                        </p>
+                                <p>
+                                <label for="first_name"><?php _e('First Name', 'wp-city-gender') ?><br />
+                                <input type="text" name="first_name" id="first_name" class="input" 
+                                value="<?php echo esc_attr(stripslashes($first_name)); ?>" size="25" />
+                                </label>
+
+                                <label for="last_name"><?php _e('Last Name', 'wp-city-gender') ?><br />
+                                <input type="text" name="last_name" id="last_name" class="input" 
+                                value="<?php echo esc_attr(stripslashes($last_name)); ?>" size="25" />
+                                </label>
+
+                                <label for="city"><?php _e('City', 'wp-city-gender') ?><br />
+                                <input type="text" name="city" id="city" class="input" 
+                                value="<?php echo esc_attr(stripslashes($city)); ?>" size="25" />
+                                </label>
+
+                                <?php _e('Gender', 'wp-city-gender') ?>: 
+                                <label><input type="radio" name="gender" value="<?= MALE ?>"
+                                <?php print($gender != FEMALE ? 'checked' : ''); ?>/>
+                                <?php _e('Male', 'wp-city-gender') ?></label>
+                                <label><input type="radio" name="gender" value="<?= FEMALE ?>"
+                                <?php print($gender == FEMALE ? 'checked' : ''); ?>/>
+                                <?php _e('Female', 'wp-city-gender') ?></label>
+                                <br />
+                                </p>
                         <?php
                 }
 
                 public static function registration_errors($errors, $sanitized_user_login, $user_email) {
-                        if (!WP_City_Gender::valid($_POST[FIRST_NAME]))
+                        $first_name = self::fix($_POST[FIRST_NAME]);
+                        $last_name  = self::fix($_POST[LAST_NAME]);
+                        $city       = self::fix($_POST[CITY]);
+                        $gender     = self::fix($_POST[GENDER]);
+
+                        if (!$first_name)
                                 $errors->add('first_name_error', __('<strong>ERROR</strong>: First name missing.','wp-city-gender'));
-                        if (!WP_City_Gender::valid($_POST[LAST_NAME]))
+                        if (!$last_name)
                                 $errors->add('last_name_error', __('<strong>ERROR</strong>: Last name missing.','wp-city-gender'));
-                        if (!WP_City_Gender::valid($_POST[GENDER]))
-                                $errors->add('gender_error', __('<strong>ERROR</strong>: Gender missing.','wp-city-gender'));
-                        if (!WP_City_Gender::valid($_POST[CITY]))
+                        if (!$city)
                                 $errors->add('city_error', __('<strong>ERROR</strong>: City missing.','wp-city-gender'));
+                        if ($gender != MALE && $gender != FEMALE)
+                                $errors->add('gender_error', __('<strong>ERROR</strong>: Gender missing.','wp-city-gender'));
+
                         return $errors;
                 }
 
                 public static function user_register($user_id) {
-                        if (WP_City_Gender::valid($_POST[FIRST_NAME]))
-                                update_user_meta($user_id, FIRST_NAME, $_POST[FIRST_NAME]);
-                        if (WP_City_Gender::valid($_POST[LAST_NAME]))
-                                update_user_meta($user_id, LAST_NAME, $_POST[LAST_NAME]);
-                        if (WP_City_Gender::valid($_POST[GENDER]))
-                                update_user_meta($user_id, GENDER, $_POST[GENDER]);
-                        if (WP_City_Gender::valid($_POST[CITY]))
-                                update_user_meta($user_id, CITY, $_POST[CITY]);
+                        $first_name = self::fix($_POST[FIRST_NAME]);
+                        $last_name  = self::fix($_POST[LAST_NAME]);
+                        $city       = self::fix($_POST[CITY]);
+                        $gender     = self::fix($_POST[GENDER]);
+
+                        if ($first_name && 
+                            $last_name && 
+                            $city && 
+                            ($gender == MALE || $gender == FEMALE)) {
+                                update_user_meta($user_id, FIRST_NAME, $first_name);
+                                update_user_meta($user_id, LAST_NAME, $last_name);
+                                update_user_meta($user_id, CITY, $city);
+                                update_user_meta($user_id, GENDER, $gender);
+                        }
                 }
         }
 }
