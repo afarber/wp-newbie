@@ -10,14 +10,15 @@ License: GPL2
 */
 
 define('FIRST_NAME', 'first_name');
-define('LAST_NAME', 'last_name');
-define('CITY', 'city');
-define('GENDER', 'gender');
-define('MALE', 'male');
-define('FEMALE', 'female');
-define('DOMAIN', 'wp-city-gender');
+define('LAST_NAME',  'last_name');
+define('CITY',       'city');
+define('GENDER',     'gender');
+define('MALE',       'male');
+define('FEMALE',     'female');
+define('DOMAIN',     'wp-city-gender');
+define('CNAME',      'WP_City_Gender');
 
-if (!class_exists('WP_City_Gender')) {
+if (!class_exists(CNAME)) {
 
 	class WP_City_Gender {
 
@@ -157,19 +158,19 @@ if (!class_exists('WP_City_Gender')) {
         }
 }
 
-if (class_exists('WP_City_Gender')) {
+if (class_exists(CNAME)) {
 
-	register_activation_hook(__FILE__,     array('WP_City_Gender', 'activate'));
-	register_deactivation_hook(__FILE__,   array('WP_City_Gender', 'deactivate'));
+	register_activation_hook(__FILE__,     array(CNAME, 'activate'));
+	register_deactivation_hook(__FILE__,   array(CNAME, 'deactivate'));
 
-        add_action('plugins_loaded',           array('WP_City_Gender', 'plugins_loaded'));
-        add_action('register_form',            array('WP_City_Gender', 'register_form'));
-        add_action('registration_errors',      array('WP_City_Gender', 'registration_errors'), 10, 3);
-        add_action('user_register',            array('WP_City_Gender', 'user_register'));
-        add_action('show_user_profile',        array('WP_City_Gender', 'show_profile'));
-        add_action('edit_user_profile',        array('WP_City_Gender', 'show_profile'));
-        add_action('personal_options_update',  array('WP_City_Gender', 'update_profile'));
-        add_action('edit_user_profile_update', array('WP_City_Gender', 'update_profile'));
+        add_action('plugins_loaded',           array(CNAME, 'plugins_loaded'));
+        add_action('register_form',            array(CNAME, 'register_form'));
+        add_action('registration_errors',      array(CNAME, 'registration_errors'), 10, 3);
+        add_action('user_register',            array(CNAME, 'user_register'));
+        add_action('show_user_profile',        array(CNAME, 'show_profile'));
+        add_action('edit_user_profile',        array(CNAME, 'show_profile'));
+        add_action('personal_options_update',  array(CNAME, 'update_profile'));
+        add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
 
 	//$wp_city_gender = new WP_City_Gender();
 }
