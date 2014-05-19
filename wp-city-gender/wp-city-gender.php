@@ -92,7 +92,7 @@ if (!class_exists('WP_City_Gender')) {
                         return $errors;
                 }
 
-                public static function user_register($user_id) {
+                public static function user_register($uid) {
                         $first_name = self::fix($_POST[FIRST_NAME]);
                         $last_name  = self::fix($_POST[LAST_NAME]);
                         $city       = self::fix($_POST[CITY]);
@@ -102,14 +102,14 @@ if (!class_exists('WP_City_Gender')) {
                             $last_name && 
                             $city && 
                             ($gender == MALE || $gender == FEMALE)) {
-                                update_user_meta($user_id, FIRST_NAME, $first_name);
-                                update_user_meta($user_id, LAST_NAME, $last_name);
-                                update_user_meta($user_id, CITY, $city);
-                                update_user_meta($user_id, GENDER, $gender);
+                                update_user_meta($uid, FIRST_NAME, $first_name);
+                                update_user_meta($uid, LAST_NAME, $last_name);
+                                update_user_meta($uid, CITY, $city);
+                                update_user_meta($uid, GENDER, $gender);
                         }
                 }
 
-                public static function user_profile($user) {
+                public static function show_profile($user) {
                         $city   = self::fix(get_user_meta($user->ID, CITY, TRUE));
                         $gender = self::fix(get_user_meta($user->ID, GENDER, TRUE));
 
@@ -141,20 +141,35 @@ if (!class_exists('WP_City_Gender')) {
 </table>
                         <?php
                 }
+
+                public static function update_profile($uid) {
+                        if (current_user_can('edit_user', $uid)) {
+                                $city   = self::fix($_POST[CITY]);
+                                $gender = self::fix($_POST[GENDER]);
+
+                                if ($city &&
+                                    ($gender == MALE || $gender == FEMALE)) {
+                                        update_user_meta($uid, CITY, $city);
+                                        update_user_meta($uid, GENDER, $gender);
+                                }
+                        }
+                }
         }
 }
 
 if (class_exists('WP_City_Gender')) {
 
-	register_activation_hook(__FILE__,   array('WP_City_Gender', 'activate'));
-	register_deactivation_hook(__FILE__, array('WP_City_Gender', 'deactivate'));
+	register_activation_hook(__FILE__,     array('WP_City_Gender', 'activate'));
+	register_deactivation_hook(__FILE__,   array('WP_City_Gender', 'deactivate'));
 
-        add_action('plugins_loaded',      array('WP_City_Gender', 'plugins_loaded'));
-        add_action('register_form',       array('WP_City_Gender', 'register_form'));
-        add_action('registration_errors', array('WP_City_Gender', 'registration_errors'), 10, 3);
-        add_action('user_register',       array('WP_City_Gender', 'user_register'));
-        add_action('show_user_profile',   array('WP_City_Gender', 'user_profile'));
-        add_action('edit_user_profile',   array('WP_City_Gender', 'user_profile'));
+        add_action('plugins_loaded',           array('WP_City_Gender', 'plugins_loaded'));
+        add_action('register_form',            array('WP_City_Gender', 'register_form'));
+        add_action('registration_errors',      array('WP_City_Gender', 'registration_errors'), 10, 3);
+        add_action('user_register',            array('WP_City_Gender', 'user_register'));
+        add_action('show_user_profile',        array('WP_City_Gender', 'show_profile'));
+        add_action('edit_user_profile',        array('WP_City_Gender', 'show_profile'));
+        add_action('personal_options_update',  array('WP_City_Gender', 'update_profile'));
+        add_action('edit_user_profile_update', array('WP_City_Gender', 'update_profile'));
 
 	//$wp_city_gender = new WP_City_Gender();
 }
