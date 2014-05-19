@@ -17,6 +17,7 @@ define('MALE',       'male');
 define('FEMALE',     'female');
 define('DOMAIN',     'wp-city-gender');
 define('CNAME',      'WP_City_Gender');
+define('PROFILE',    '<a href="/user/%s" rel="external nofollow" class="url">%s</a>');
 
 if (!class_exists(CNAME)) {
 
@@ -155,6 +156,11 @@ if (!class_exists(CNAME)) {
                                 }
                         }
                 }
+
+                public static function get_comment_author_link($cid) {
+                        $uid = get_comment_author($cid);
+                        return sprintf(PROFILE, $uid->ID, $uid->name);
+                }
         }
 }
 
@@ -171,6 +177,7 @@ if (class_exists(CNAME)) {
         add_action('edit_user_profile',        array(CNAME, 'show_profile'));
         add_action('personal_options_update',  array(CNAME, 'update_profile'));
         add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
+        add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
 
 	//$wp_city_gender = new WP_City_Gender();
 }
