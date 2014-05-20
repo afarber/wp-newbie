@@ -28,6 +28,8 @@ if (!class_exists(CNAME)) {
 		}
 
 		public static function init() {
+                        load_plugin_textdomain(DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/');
+
                         $user = wp_get_current_user(); 
                         if (!$user instanceof WP_User) 
                                 return; 
@@ -43,10 +45,6 @@ if (!class_exists(CNAME)) {
 		}
 
 		public static function deactivate() {
-		}
-
-		public static function plugins_loaded() {
-                        load_plugin_textdomain(DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/');
 		}
 
                 public static function fix($str) {
@@ -184,7 +182,6 @@ if (class_exists(CNAME)) {
 	register_deactivation_hook(__FILE__,   array(CNAME, 'deactivate'));
 
         add_action('init',                     array(CNAME, 'init'));
-        add_action('plugins_loaded',           array(CNAME, 'plugins_loaded'));
         add_action('register_form',            array(CNAME, 'register_form'));
         add_action('registration_errors',      array(CNAME, 'registration_errors'), 10, 3);
         add_action('user_register',            array(CNAME, 'user_register'));
