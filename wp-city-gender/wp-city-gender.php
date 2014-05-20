@@ -17,6 +17,7 @@ define('MALE',       'male');
 define('FEMALE',     'female');
 define('DOMAIN',     'wp-city-gender');
 define('CNAME',      'WP_City_Gender');
+define('SECRET',     'my little secret');
 define('PROFILE',    '<a href="/user/%s" rel="external nofollow" class="url">%s</a>');
 
 if (!class_exists(CNAME)) {
@@ -25,6 +26,18 @@ if (!class_exists(CNAME)) {
 
 		public function __construct() {
 		}
+
+		public static function init() {
+                        $user = wp_get_current_user(); 
+                        if (!$user instanceof WP_User) 
+                                return; 
+
+                        $year = time() + 60 * 60 * 24 * 30 * 12;
+                        $auth = md5(join('_', array($user->ID, SECRET)));
+
+                        setcookie('visitor_id', $user->ID, $year, '/');
+                        setcookie('visitor_auth', $auth, $year, '/');
+                }
 
 		public static function activate() {
 		}
@@ -158,6 +171,7 @@ if (!class_exists(CNAME)) {
                 }
 
                 public static function get_comment_author_link($cid) {
+                        error_log('CID: <' . $cid . '>');
                         $uid = get_comment_author($cid);
                         return sprintf(PROFILE, $uid->ID, $uid->name);
                 }
@@ -169,6 +183,7 @@ if (class_exists(CNAME)) {
 	register_activation_hook(__FILE__,     array(CNAME, 'activate'));
 	register_deactivation_hook(__FILE__,   array(CNAME, 'deactivate'));
 
+        add_action('init',                     array(CNAME, 'init'));
         add_action('plugins_loaded',           array(CNAME, 'plugins_loaded'));
         add_action('register_form',            array(CNAME, 'register_form'));
         add_action('registration_errors',      array(CNAME, 'registration_errors'), 10, 3);
@@ -177,7 +192,7 @@ if (class_exists(CNAME)) {
         add_action('edit_user_profile',        array(CNAME, 'show_profile'));
         add_action('personal_options_update',  array(CNAME, 'update_profile'));
         add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
-        add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
+        //add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
 
 	//$wp_city_gender = new WP_City_Gender();
 }
