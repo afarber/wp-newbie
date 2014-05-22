@@ -18,7 +18,7 @@ define('FEMALE',     'female');
 define('DOMAIN',     'wp-city-gender');
 define('CNAME',      'WP_City_Gender');
 define('SECRET',     'my little secret');
-define('PROFILE',    '<a href="/user/%s" rel="external nofollow" class="url">%s</a>');
+define('PROFILE',    '<a href="/user/%d" rel="external nofollow" class="url">%d</a>');
 
 if (!class_exists(CNAME)) {
 
@@ -168,10 +168,11 @@ if (!class_exists(CNAME)) {
                         }
                 }
 
-                public static function get_comment_author_link($cid) {
-                        error_log('CID: <' . $cid . '>');
-                        $uid = get_comment_author($cid);
-                        return sprintf(PROFILE, $uid->ID, $uid->name);
+                public static function get_comment_author_link($url) {
+                        global $comment;
+                        $uid = $comment->user_id;
+                        //error_log('UID: <' . $uid . '>');
+                        return sprintf(PROFILE, $uid, $uid);
                 }
         }
 }
@@ -189,7 +190,9 @@ if (class_exists(CNAME)) {
         add_action('edit_user_profile',        array(CNAME, 'show_profile'));
         add_action('personal_options_update',  array(CNAME, 'update_profile'));
         add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
-        //add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
+        add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
+
+        remove_action('shutdown', 'wp_ob_end_flush_all', 1);
 
 	//$wp_city_gender = new WP_City_Gender();
 }
