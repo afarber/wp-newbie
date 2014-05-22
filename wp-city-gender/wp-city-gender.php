@@ -18,7 +18,7 @@ define('FEMALE',     'female');
 define('DOMAIN',     'wp-city-gender');
 define('CNAME',      'WP_City_Gender');
 define('SECRET',     'my little secret');
-define('PROFILE',    '<a href="/user/%d" rel="external nofollow" class="url">%d</a>');
+define('PROFILE',    '<a href="/user/%d" rel="external nofollow" class="url">%s</a>');
 
 if (!class_exists(CNAME)) {
 
@@ -171,8 +171,7 @@ if (!class_exists(CNAME)) {
                 public static function get_comment_author_link($url) {
                         global $comment;
                         $uid = $comment->user_id;
-                        //error_log('UID: <' . $uid . '>');
-                        return sprintf(PROFILE, $uid, $uid);
+                        return sprintf(PROFILE, $comment->user_id, $comment->comment_author);
                 }
         }
 }
