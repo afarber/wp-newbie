@@ -43,7 +43,7 @@ if (!class_exists(CNAME)) {
 
 		public static function activate() {
                         add_rewrite_rule('/user/(\d+)',
-                                         'index.php?XXX_I_DONT_KNOW' . $matches[1],
+                                         'index.php?XXX=$matches[1]',
                                          'top'
                         );
                         flush_rewrite_rules();
