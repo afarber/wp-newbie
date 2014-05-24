@@ -42,6 +42,11 @@ if (!class_exists(CNAME)) {
                 }
 
 		public static function activate() {
+                        add_rewrite_rule('/user/(\d+)',
+                                         'index.php?XXX_I_DONT_KNOW' . $matches[1],
+                                         'top'
+                        );
+                        flush_rewrite_rules();
 		}
 
 		public static function deactivate() {
@@ -170,7 +175,6 @@ if (!class_exists(CNAME)) {
 
                 public static function get_comment_author_link($url) {
                         global $comment;
-                        $uid = $comment->user_id;
                         return sprintf(PROFILE, $comment->user_id, $comment->comment_author);
                 }
         }
@@ -191,7 +195,7 @@ if (class_exists(CNAME)) {
         add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
         add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
 
-        remove_action('shutdown', 'wp_ob_end_flush_all', 1);
+        //remove_action('shutdown', 'wp_ob_end_flush_all', 1);
 
 	//$wp_city_gender = new WP_City_Gender();
 }
