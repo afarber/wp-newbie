@@ -39,18 +39,31 @@ if (!class_exists(CNAME)) {
 
                         setcookie('visitor_id', $user->ID, $year, '/');
                         setcookie('visitor_auth', $auth, $year, '/');
+
+                        add_rewrite_endpoint('user', EP_ALL);
+                        add_rewrite_rule(
+                                'user/([0-9]+)/?',
+                                'index.php?user_id=$matches[1]',
+                                'top'
+                        );
                 }
 
 		public static function activate() {
-                        add_rewrite_rule('/user/(\d+)',
-                                         'index.php?XXX=$matches[1]',
-                                         'top'
+                        add_rewrite_rule(
+                                'user/([0-9]+)/?',
+                                'index.php?user_id=$matches[1]',
+                                'top'
                         );
                         flush_rewrite_rules();
 		}
 
 		public static function deactivate() {
 		}
+
+                public static function query_vars($vars) {
+                        $vars[] = 'user_id';
+                        return $vars;
+                }
 
                 public static function fix($str) {
                         return (isset($str) && strlen($str) > 1 ? $str : NULL);
@@ -194,6 +207,8 @@ if (class_exists(CNAME)) {
         add_action('personal_options_update',  array(CNAME, 'update_profile'));
         add_action('edit_user_profile_update', array(CNAME, 'update_profile'));
         add_action('get_comment_author_link',  array(CNAME, 'get_comment_author_link'));
+
+        add_filter('query_vars',               array(CNAME, 'query_vars'));
 
         //remove_action('shutdown', 'wp_ob_end_flush_all', 1);
 
