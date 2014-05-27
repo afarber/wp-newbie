@@ -65,6 +65,20 @@ if (!class_exists(CNAME)) {
                         return $vars;
                 }
 
+                public static function template_redirect() {
+                        $user_id = get_query_var('user_id');
+
+                        $tpl = 'templates/profile.php';
+
+                        if (!empty($user_id)) {
+                                if ('' != locate_template($tpl))
+                                        get_template_part('tpl', 'user');
+                                else
+                                        include(plugin_dir_path( __FILE__ ) . $tpl);  
+                                exit();
+                        }
+                }
+
                 public static function fix($str) {
                         return (isset($str) && strlen($str) > 1 ? $str : NULL);
                 }
@@ -199,6 +213,7 @@ if (class_exists(CNAME)) {
 	register_deactivation_hook(__FILE__,   array(CNAME, 'deactivate'));
 
         add_action('init',                     array(CNAME, 'init'));
+        add_action('template_redirect',        array(CNAME, 'template_redirect'));
         add_action('register_form',            array(CNAME, 'register_form'));
         add_action('registration_errors',      array(CNAME, 'registration_errors'), 10, 3);
         add_action('user_register',            array(CNAME, 'user_register'));
