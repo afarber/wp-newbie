@@ -18,6 +18,7 @@ define('FEMALE',     'female');
 define('DOMAIN',     'wp-city-gender');
 define('CNAME',      'WP_City_Gender');
 define('SECRET',     'my little secret');
+define('TEMPLATE',   'templates/profile.php');
 define('PROFILE',    '<a href="/user/%d" rel="external nofollow" class="url">%s</a>');
 
 if (!class_exists(CNAME)) {
@@ -28,7 +29,7 @@ if (!class_exists(CNAME)) {
 		}
 
 		public static function init() {
-                        load_plugin_textdomain(DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/');
+                        load_plugin_textdomain(DOMAIN, FALSE, plugin_dir_path(__FILE__) . '/languages/');  
 
                         $user = wp_get_current_user(); 
                         if (!$user instanceof WP_User) 
@@ -67,14 +68,15 @@ if (!class_exists(CNAME)) {
 
                 public static function template_redirect() {
                         $user_id = get_query_var('user_id');
-
-                        $tpl = 'templates/profile.php';
-
                         if (!empty($user_id)) {
-                                if ('' != locate_template($tpl))
-                                        get_template_part('tpl', 'user');
-                                else
-                                        include(plugin_dir_path( __FILE__ ) . $tpl);  
+                                // look for profile template in the active theme
+                                $template = locate_template(TEMPLATE);
+                                // if not found use the default template included with plugin
+                                if(empty($template)) {
+                                        $template = plugin_dir_path(__FILE__) . TEMPLATE;
+                                }
+
+                                load_template($template);
                                 exit();
                         }
                 }
