@@ -1,5 +1,10 @@
 <?php
 
+function theme_enqueue_styles() {
+    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+
+}
+
 function my_custom_header() 
 {
         $args = array( 'height' => 800 );
@@ -16,18 +21,18 @@ function my_flush_rules()
 {
     $rules = get_option( 'rewrite_rules' );
 
-    #if ( ! isset( $rules['(player)-(\d*)$'] ) )
-    #{
+    if ( ! isset( $rules['(player)-(\d+)$'] ) )
+    {
         global $wp_rewrite;
         $wp_rewrite->flush_rules();
-    #}
+    }
 }
 
 // Adding a new rule page slug with number
 function my_insert_rewrite_rules( $rules )
 {
     $newrules = array();
-    $newrules['(player)-(\d*)$'] = 'index.php?pagename=$matches[1]&player_id=$matches[2]';
+    $newrules['(player)-(\d+)$'] = 'index.php?pagename=$matches[1]&player_id=$matches[2]';
     //combine all page rules
     return $newrules + $rules;
 }
@@ -47,7 +52,7 @@ function my_insert_query_vars( $vars )
  * @param  string $content Oringinal text
  * @return string New Content with or without original text
  */
-function my_the_content_filter( $content )
+function my_content_filter( $content )
 {
     if ( is_page( 'player' ) )
     {
@@ -80,7 +85,7 @@ function _player_info( $player_id )
     $user = get_user_by( 'id', $player_id );
     ?>
 
-    <table>
+    <table cellpadding="8">
         <tr>
             <td><?php _e( 'Name', 'text_domain' ); ?></td>
             <td><?php echo $user->first_name . ' ' . $user->last_name; ?></td>
@@ -92,12 +97,13 @@ function _player_info( $player_id )
     return $html;
 }
 
+add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
 add_action( 'after_setup_theme', 'my_custom_header' );
 add_filter( 'page_link', 'my_pages_anchor' );
 add_filter( 'page_rewrite_rules','my_insert_rewrite_rules' );
 add_filter( 'query_vars','my_insert_query_vars' );
 add_action( 'wp_loaded','my_flush_rules' );
-add_filter( 'the_content', 'my_the_content_filter' );
+add_filter( 'the_content', 'my_content_filter' );
 
 ?>
 
