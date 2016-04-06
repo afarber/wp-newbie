@@ -1,0 +1,74 @@
+/*
+ Theme Name:   Twenty Thirteen Child
+ Theme URI:    http://example.com/twentythirteen-child/
+ Description:  Twenty Thirteen Child Theme
+ Author:       Alexander Farber
+ Author URI:   http://afarber.de
+ Template:     twentythirteen
+ Version:      1
+ Tags:         light, responsive-layout, accessibility-ready
+ Text Domain:  twenty-thirteen-child
+*/
+
+@import url("../twentythirteen/style.css");
+
+body {
+	color: #183e47;
+        background-color: #f7f5e7;
+}
+
+input,
+textarea,
+.wp-caption .wp-caption-text,
+.entry-caption,
+.gallery-caption,
+.site-header .home-link,
+.nav-menu li a,
+.entry-title a,
+.format-video .entry-meta {
+	color: #183e47;
+}
+
+.nav-menu li:hover > a,
+.nav-menu li a:hover,
+.nav-menu li:focus > a,
+.nav-menu li a:focus,
+.nav-menu .sub-menu,
+.nav-menu .children,
+.hentry .mejs-mediaelement,
+.hentry .mejs-container .mejs-controls {
+	background: #183e47;
+}
+
+.site-footer .sidebar-container {
+	background-color: #183e47;
+}
+
+.site-footer .widget a {
+	color: #fabf8f;
+}
+
+.site-header .home-link {
+	min-height: 800px;
+	text-decoration: none;
+	pointer-events: none;
+	cursor: default;
+}
+
+/*
+@media (max-width: 767px) {
+	.site-header .home-link {
+		min-height: 400px;
+	}
+}
+
+@media (max-width: 359px) {
+	.site-header .home-link {
+		min-height: 200px;
+	}
+}
+*/
+
+div.site-info {
+     display: none;
+}
