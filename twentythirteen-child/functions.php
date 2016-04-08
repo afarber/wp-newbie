@@ -1,8 +1,8 @@
 <?php
 
-function theme_enqueue_styles() {
+function my_enqueue_css() 
+{
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-
 }
 
 function my_custom_header() 
@@ -97,7 +97,25 @@ function _player_info( $player_id )
     return $html;
 }
 
-add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
+/*
+function my_nav_menu_items($items) {
+    $homelink = '<li class="home"><a href="' . home_url( '/player-1' ) . '">Player #1</a></li>';
+    // add the home link to the end of the menu
+    $items = $items . $homelink;
+    return $items;
+}
+*/
+
+function my_register_menus() {
+    register_nav_menus( array(
+            'primary-menu' => __( 'Header Menu' ),
+         )
+    );
+}
+
+add_action( 'init', 'my_register_menus' );
+//add_filter( 'wp_nav_menu_items', 'my_nav_menu_items' );
+add_action( 'wp_enqueue_scripts', 'my_enqueue_css' );
 add_action( 'after_setup_theme', 'my_custom_header' );
 add_filter( 'page_link', 'my_pages_anchor' );
 add_filter( 'page_rewrite_rules','my_insert_rewrite_rules' );
