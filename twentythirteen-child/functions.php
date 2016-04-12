@@ -91,30 +91,6 @@ function player_info( $player_id )
     return $html;
 }
 
-/*
-function my_nav_menu_objects( $sorted_menu_items ) 
-{
-    foreach ( $sorted_menu_items as $item ) {
-            error_log(print_r($item, TRUE));
-
-            if ( $item->title == 'Profile' ) {
-                $item->url = '/player-42';
-                break;
-            }
-    }
-
-    $link = array (
-        'title'            => 'Profile',
-        'menu_item_parent' => 0,
-        'ID'               => 32,
-        'url'              => '/player-42',
-    );
-
-    // $sorted_menu_items[] = (object) $link;
-    return $sorted_menu_items;
-}
-*/
-
 function my_nav_menu_items( $items ) 
 {
     $profile = sprintf('<li class="menu-item menu-item-type-custom menu-item-object-custom %s"><a href="/player-%d/#navbar">Профиль</a></li>', 
@@ -123,7 +99,6 @@ function my_nav_menu_items( $items )
     return $items . $profile;
 }
 
-//add_filter( 'wp_nav_menu_objects', 'my_nav_menu_objects' );
 add_filter( 'wp_nav_menu_items', 'my_nav_menu_items' );
 add_action( 'wp_enqueue_scripts', 'my_enqueue_css' );
 add_action( 'after_setup_theme', 'my_custom_header' );
