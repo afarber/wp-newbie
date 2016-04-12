@@ -7,13 +7,8 @@ function my_enqueue_css()
 
 function my_custom_header() 
 {
-        $args = array( 'height' => 800 );
-        add_theme_support( 'custom-header', $args );
-}
-
-function my_pages_anchor( $url ) 
-{
-        return ( preg_match( '/#\w*$/', $url ) ? $url : $url . '#navbar' );
+    $args = array( 'height' => 800 );
+    add_theme_support( 'custom-header', $args );
 }
 
 // flush_rules() if our rules are not yet included
@@ -33,7 +28,6 @@ function my_insert_rewrite_rules( $rules )
 {
     $newrules = array();
     $newrules['(player)-(\d+)$'] = 'index.php?pagename=$matches[1]&player_id=$matches[2]';
-    //combine all page rules
     return $newrules + $rules;
 }
 
@@ -60,13 +54,13 @@ function my_content_filter( $content )
         if ( $player_id > 0 ) {
             /**
              * Add user info only ( overwrite page content )
-               $content = _player_info( $player_id );
+               $content = player_info( $player_id );
              */
 
             /**
              * Include your page content and additional content of user info
              */
-            $content .= _player_info( $player_id );
+            $content .= player_info( $player_id );
         }
     }
 
@@ -79,7 +73,7 @@ function my_content_filter( $content )
  * @param  integer $player_id User ID
  * @return string User data front-end
  */
-function _player_info( $player_id )
+function player_info( $player_id )
 {
     ob_start();
     $user = get_user_by( 'id', $player_id );
@@ -97,27 +91,32 @@ function _player_info( $player_id )
     return $html;
 }
 
+function my_nav_menu_objects( $sorted_menu_items ) 
+{
+    $link = array (
+        'title'            => 'Profile',
+        'menu_item_parent' => 0,
+        'ID'               => 32,
+        'url'              => '/player-42',
+    );
+
+    $sorted_menu_items[] = (object) $link;
+
+    return $sorted_menu_items;
+}
+
 /*
-function my_nav_menu_items($items) {
-    $homelink = '<li class="home"><a href="' . home_url( '/player-1' ) . '">Player #1</a></li>';
-    // add the home link to the end of the menu
-    $items = $items . $homelink;
-    return $items;
+function my_nav_menu_items( $items ) 
+{
+    $profile = sprintf('<li id="menu-item-32" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32"><a href="/player-%d/#navbar">Профиль</a></li>', 42);
+    return $items . $profile;
 }
 */
 
-function my_register_menus() {
-    register_nav_menus( array(
-            'primary-menu' => __( 'Header Menu' ),
-         )
-    );
-}
-
-add_action( 'init', 'my_register_menus' );
+add_filter( 'wp_nav_menu_objects', 'my_nav_menu_objects' );
 //add_filter( 'wp_nav_menu_items', 'my_nav_menu_items' );
 add_action( 'wp_enqueue_scripts', 'my_enqueue_css' );
 add_action( 'after_setup_theme', 'my_custom_header' );
-add_filter( 'page_link', 'my_pages_anchor' );
 add_filter( 'page_rewrite_rules','my_insert_rewrite_rules' );
 add_filter( 'query_vars','my_insert_query_vars' );
 add_action( 'wp_loaded','my_flush_rules' );
