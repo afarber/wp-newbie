@@ -1,0 +1,65 @@
+/*
+ Theme Name:   Twenty Thirteen Child
+ Theme URI:    http://example.com/twentythirteen-child/
+ Description:  Twenty Thirteen Child Theme
+ Author:       Alexander Farber
+ Author URI:   http://afarber.de
+ Template:     twentythirteen
+ Version:      1
+ Tags:         light, responsive-layout, accessibility-ready
+ Text Domain:  twenty-thirteen-child
+*/
+
+@import url("../twentythirteen/style.css");
+
+body {
+	color: #333333;
+        background-color: #ffffff;
+}
+
+.site-header .site-title:hover {
+	text-decoration: none;
+}
+
+.site-header .home-link {
+       color: #333333;
+       pointer-events: none;
+       cursor: default;
+}
+
+.nav-menu .current_page_item > a {
+	color: #333333;
+}
+
+.nav-menu li a,
+.entry-title a {
+	color: #5482bf;
+}
+
+.nav-menu li:hover > a,
+.nav-menu li a:hover,
+.nav-menu li:focus > a,
+.nav-menu li a:focus,
+.nav-menu .sub-menu,
+.nav-menu .children,
+.site-footer .sidebar-container {
+	background-color: #5482bf;
+}
+
+.site-footer .widget a {
+	color: #ffffff;
+}
+
+.site-footer .sidebar-container {
+       background: url(http://simplex.ru/wp-content/uploads/2016/03/meat-1.jpg) no-repeat scroll bottom;
+       background-size: 1600px;
+}
+
+.site-header .home-link {
+	min-height: 600px;
+}
+
+div.site-info {
+     display: none;
+}
+
