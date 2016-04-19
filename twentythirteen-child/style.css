@@ -10,6 +10,10 @@
  Text Domain:  twenty-thirteen-child
 */
 
+canvas {
+        border: 1px solid red;
+}
+
 body {
 	color: #183e47;
         background-color: #f7f5e7;

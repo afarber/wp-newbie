@@ -64,6 +64,9 @@ WHERE user_id = %d';
 ?>
 
 </pre>
+
+<canvas id="board" width="300" height="300"></canvas>
+
 </div>
 
 <?php
