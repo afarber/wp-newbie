@@ -102,15 +102,26 @@ function player_info( $player_id )
     return $html;
 }
 
-function my_nav_menu_items( $items ) 
+function my_nav_menu_items( $items, $args ) 
 {
+    //error_log(print_r($args, TRUE));
+
+    // only append profile link to the primary menu
+
+    // TODO: check the valid cookie too
+
+    if( $args->theme_location != 'primary' ) 
+    {
+        return $items;
+    }
+
     $profile = sprintf('<li class="menu-item menu-item-type-custom menu-item-object-custom %s"><a href="/player-%d/#navbar">Профиль</a></li>', 
         ( is_page( 'player' ) ? 'current-menu-item' : '' ),
-        42);
+        1);
     return $items . $profile;
 }
 
-add_filter( 'wp_nav_menu_items', 'my_nav_menu_items' );
+add_filter( 'wp_nav_menu_items', 'my_nav_menu_items', 10, 2 );
 add_action( 'wp_enqueue_scripts', 'my_enqueue_scripts' );
 add_action( 'after_setup_theme', 'my_custom_header' );
 add_filter( 'page_rewrite_rules','my_insert_rewrite_rules' );
